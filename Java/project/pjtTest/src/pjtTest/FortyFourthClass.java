@@ -1,10 +1,10 @@
 package pjtTest;
 
-public class FortiethFourthClass {
+public class FortyFourthClass {
 	
 	public static void main(String[] args) {
 		
-		FortiethSixthClass childClass = new FortiethSixthClass();
+		FortySixthClass childClass = new FortySixthClass();
 		childClass.childFun();
 		childClass.parentFun();
 		
