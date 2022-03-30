@@ -1,8 +1,8 @@
 package pjtTest;
 
-public class FortiethSixthClass extends FortiethFifthClass {
+public class FortySixthClass extends FortyFifthClass {
 	
-	public FortiethSixthClass() {
+	public FortySixthClass() {
 		System.out.println("ChildClass construcor");
 		
 	}
