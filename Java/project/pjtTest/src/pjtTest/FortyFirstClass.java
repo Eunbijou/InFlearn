@@ -1,25 +1,25 @@
 package pjtTest;
 
-public class FortiethFirstClass {
+public class FortyFirstClass {
 
 	int num;
 	String str;
 	int nums[];
 	
-	public FortiethFirstClass() {
+	public FortyFirstClass() {
 		
 		System.out.println("Default constructor");
 		
 	}
 	
-	public FortiethFirstClass(int i) {
+	public FortyFirstClass(int i) {
 		
 		System.out.println("Custom constructor");
 		num = i;
 		
 	}
 	
-	public FortiethFirstClass(String s, int i[]) {
+	public FortyFirstClass(String s, int i[]) {
 		
 		System.out.println("UserDefined constructor");
 		str = s;
@@ -27,7 +27,7 @@ public class FortiethFirstClass {
 		
 	}
 	
-	public FortiethFirstClass(int i, String s, int is[]) {
+	public FortyFirstClass(int i, String s, int is[]) {
 		
 		System.out.println("UserDefined constructor");
 		
