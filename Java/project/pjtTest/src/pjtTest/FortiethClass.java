@@ -4,26 +4,26 @@ public class FortiethClass {
 
 	public static void main(String[] args) {
 		
-		// µğÆúÆ® »ı¼ºÀÚ
-		FortiethFirstClass obj1 = new FortiethFirstClass();
+		// ë””í´íŠ¸ ìƒì„±ì
+		FortyFirstClass obj1 = new FortyFirstClass();
 		
 		System.out.println();
 		
-		// »ç¿ëÀÚ Á¤ÀÇ »ı¼ºÀÚ
-		FortiethFirstClass obj2 = new FortiethFirstClass(10);
+		// ì‚¬ìš©ì ì •ì˜ ìƒì„±ì
+		FortyFirstClass obj2 = new FortyFirstClass(10);
 		
 		int arr[] = {10, 20, 30};
-		FortiethFirstClass obj3 = new FortiethFirstClass("Java", arr);
+		FortyFirstClass obj3 = new FortyFirstClass("Java", arr);
 		
-		// ¼Ò¸êÀÚ
-		FortiethFirstClass obj4;
+		// ì†Œë©¸ì
+		FortiyFirstClass obj4;
 		
-		obj4 = new FortiethFirstClass();
-		obj4 = new FortiethFirstClass();
+		obj4 = new FortyFirstClass();
+		obj4 = new FortyFirstClass();
 		
-		// this Å°¿öµå
+		// this í‚¤ì›Œë“œ
 		int ints[] = {10, 20, 30};
-		FortiethFirstClass obj5 = new FortiethFirstClass(10, "Java", ints);
+		FortyFirstClass obj5 = new FortyFirstClass(10, "Java", ints);
 		
 	}
 }
