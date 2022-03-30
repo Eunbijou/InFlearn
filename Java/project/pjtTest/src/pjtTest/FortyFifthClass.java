@@ -1,8 +1,8 @@
 package pjtTest;
 
-public class FortiethFifthClass {
+public class FortyFifthClass {
 	
-	public FortiethFifthClass() {
+	public FortyFifthClass() {
 		System.out.println("ParentClass constructor");
 		
 	}
