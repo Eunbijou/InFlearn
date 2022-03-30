@@ -1,10 +1,10 @@
 package pjtTest;
 
-public class FortiethSecondClass {
+public class FortySecondClass {
 
 	public static void main(String[] args) {
 		
-		FortiethThirdClass obj1 = new FortiethThirdClass(10, 20);
+		FortyThirdClass obj1 = new FortyThirdClass(10, 20);
 		
 		obj1.getInfo();
 		
