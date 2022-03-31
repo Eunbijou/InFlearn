@@ -1,10 +1,10 @@
 package pjtTest;
 
-public class EgihthClass {
+public class EighthClass {
 	
 	public static void main(String[] args) {
 		
-		// ¼­½Ä ¹®ÀÚ Á¤·Ä ±â´É
+		// ì„œì‹ ë¬¸ì ì •ë ¬ ê¸°ëŠ¥
 		System.out.printf("%d\n", 123);
 		System.out.printf("%d\n", 1234);
 		System.out.printf("%d\n", 12345);
@@ -17,7 +17,7 @@ public class EgihthClass {
 		
 		System.out.println();
 		
-		// ¼­½Ä ¹®ÀÚ ¼Ò¼öÁ¡ Á¦ÇÑ ±â´É
+		// ì„œì‹ ë¬¸ì ì†Œìˆ˜ì  ì œí•œ ê¸°ëŠ¥
 		System.out.printf("%f\n", 1.23);
 		System.out.printf("%.0f\n", 1.23);
 		System.out.printf("%.1f\n", 1.23);
