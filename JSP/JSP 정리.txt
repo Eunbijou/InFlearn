@@ -1,0 +1,49 @@
+실전 JSP
+1. 웹 프로그램 개요
+ 1-1. 웹 프로그램이란?
+ - 웹 프로그램 : 인터넷 서비스를 이용해서 서로 다른 구성 요소들(PC 등)이 통신할 수 있는 프로그램이다.
+ - 사용자(브라우저) -> Request -> Web Server -> Response -> 사용자(브라우저)
+ 1-2. 프로토콜(Protocol)과 IP
+ - 프로토콜 : 통신을 하기위한 규약으로, HTTP, FTP, SMTP, POP 등이 있다.
+ - 인터넷 객체 -> Request -> Web Server -> Response -> 인터넷 객체
+ - http://www.google.com:80/index.html 중, http는 protocol, www는 인터넷 서비스 구분, google.com은 도메인, 80은 port, index.html은 경로이다.
+ 1-3. 웹 프로그램의 동작 원리
+ - User(browser) -> Request(html) -> Web Server -> query -> Database -> result -> Web Server -> Response(html) -> User(browser)
+ - Web Server : HTML(정적 데이터) , Container(동적 데이터)
+
+2. 개발 환경 설정
+ 2-1. JDK 설치
+ - http://www.oracle.com/technetwork/java/javase/downloads
+ - Development Tools -> Next
+ 2-2. Path 설정
+ - javac.exe, java.exe(JVM 구동 명령 컴파일러)를 다른 디렉터리에서도 실행할 수 있도록 하기 위해 환경 변수(Path)에 bin 경로를 등록한다.
+ - JAVA_HOME 환경 변수 추가, Path 환경 변수에 JDK의 bin 디렉터리 추가
+ 2-3. 이클립스 다운로드
+ - IDE(Integrated Development Environment : 통합 개발 환경) 설치 – eclipse
+ 2-4. 웹 컨테이너(Apache Tomcat 8.5) 설치
+ - http://tomcat.apache.org/
+ - Eclipse – Window – show View – Other – Server – Servers – Tomcat v8.5 Server – Next – JRE 해당하는 것 선택 – Finish
+ - Sever Locations : Use Tomcat installation(takes control of Tomcat installation)
+ - Server Options : Publish module contexts to separate XML files
+ - Ports : HTTP/1.1 : 8090
+
+3. JSP 맛보기
+ 3-1. 웹 컨테이너 구조
+ - xxx.jsp -> request -> xxx_jsp.java -> xxx_jsp.class -> xxx_jsp.obj -> response -> HTML
+ - 웹 컨테이너(tomcat) : xxx_jsp.java, xxx_jsp.class, xxx_jsp.obj
+ 3-2. JSP 파일 작성
+ - Dynamic Web Project -> Project name -> Finish
+ - Project 클릭 -> New -> JSP File -> WebContent -> File name -> Finish
+ - File 작성 -> Run As -> Run on Sever -> Tomcat v8.5 -> Finish
+ 3-3. .java 파일 확인
+ - xxx.jsp -> xxx_jsp.java -> xxx_jsp.class
+
+4. Servlet 맛보기
+ 4-1. 웹 컨테이너 구조
+ - Browser -> request -> xxx.java -> xxx.class -> xxx.obj -> response -> Browser
+ - 웹 컨테이너(tomcat) : xxx.java, xxx.class, xxx.obj
+ 4-2. Servlet 파일 작성
+ - New -> Dynamic Web Project -> Project name -> Next -> Next -> Content root, Content directory -> Finish
+ - src -> New -> Servlet -> Java package, Class name, Superclass -> Next -> URL mappings -> Servlet 지우기 -> Next -> Finish
+ 4-3. Class 파일 확인
+ - browser -> xxx.java -> xxx.class
