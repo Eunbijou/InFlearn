@@ -47,3 +47,51 @@
  - src -> New -> Servlet -> Java package, Class name, Superclass -> Next -> URL mappings -> Servlet 지우기 -> Next -> Finish
  4-3. Class 파일 확인
  - browser -> xxx.java -> xxx.class
+
+5. Servlet 맵핑
+ 5-1. Servlet 맵핑이란?
+ - Browser -> request -> 웹 컨테이너(tomcat)=servlet
+ - requesr(서블릿 구분 필요) -> 서블릿 구분 방법 ->localhost:8090
+ - full path : http://localhost:8090/lec05Pjt001/servlet/com.servlet.ServletEx, 보안 취약, 복잡한 URL
+ - mapping path : http://localhost:8090/lec05Pjt001/SE, 간결한 URL
+ 5-2. web.xml 파일을 이용한 맵핑
+ - web.xml은 배치 지시자(deployment descriptior)
+<servlet>
+	<servlet-name>servletEx</servlet-name>
+	<servlet-class>com.servlet.ServletEx</servlet-class>
+</servlet>
+<servlet>
+	<servlet-name>servletEx</servlet-name>
+	<url-pattern>/SE</url-pattern>
+</servlet>
+ 5-3. Java Annotation을 이용한 맵핑
+ - @WebServlet(“/Hello”) -> http://localhost:8090/lec05Pjt001/Hello
+
+6. Servlet request, response
+ 6-1. HttpServlet
+ - user -> Request -> 웹 컨테이너(tomcat) servlet -> Response -> user
+ - ServletEx(class) -> HttpServlet(abstract class) -> GenericServlet(avstract class) -> Servlet(interface), ServletConfig(interface), Serializable(interface)
+ - Servlet extends HttpServlet -> HttpServlet extends javax.servlet.GenericServlet
+ 6-2. HttpServletRequest
+ - HttpServletRequest : 요청에 대한 정보를 가지고 있는 객체
+ - user -> Request -> 웹 컨테이너(tomcat) servlet
+ 6-3. HttpServletResponse
+ - HttpServletResponse : 응답에 대한 정보를 가지고 있는 객체
+ - user <- Response <- 웹 컨테이너(tomcat) servlet
+
+7. Servlet Life-Cycle
+ 7-1. Servlet 생명주기
+ - @PostConstruct -> init() -> service -> destory() -> @PreDestory
+ - Servlet 생성 및 종료 : init(), service, destory()
+ 7-2. 생명주기 관련 메서드
+
+8. form 데이터 처리
+ 8-1. form 태그
+ - Browser -> Request(DATA) -> 웹 컨테이너(tomcat) servlet
+ - form 관련 태그(user data) -> request 객체(user data)
+ 8-2. doGet
+ - form 관련 태그(user data) -> 데이터가 웹 브라우저 URL에 노출되어 웹 서버로 전송(보안에 약하다) -> request 객체(user data)
+ - method=“get” -> doGet(), 사용자 정보가 URL에 노출
+ 8-3. doPost
+ - form 관련 태그(user data) -> 데이터가 HTTP Requesr에 포함되어 웹 서버로 전송(보안에 강하다) -> request 객체(user data)
+ - method=“post” -> doPost(), 맵핑 정보만 노출
