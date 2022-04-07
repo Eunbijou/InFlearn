@@ -95,3 +95,137 @@
  8-3. doPost
  - form 관련 태그(user data) -> 데이터가 HTTP Requesr에 포함되어 웹 서버로 전송(보안에 강하다) -> request 객체(user data)
  - method=“post” -> doPost(), 맵핑 정보만 노출
+
+9. JSP 스크립트
+ 9-1. Servlet vs JSP
+ - Servlet > JAVA 코드, xxx.java -> xxx.class
+ - JSP > HTML > JAVA 코드, xxx.jsp -> xxx_jsp.java -> xxx_jsp.class
+ 9-2. JSP 파일 HTML5 포맷 설정
+ - Window -> Preferences -> Templates -> New -> html5 format, New JSP, Automatically insert
+<%@ page language="java" contentType="text/html; charset=${encoding}" 
+pageEncoding="${encoding}"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="${encoding}">
+<title>Insert title here</title>
+</head>
+<body>
+</body>
+</html>
+ 9-3. JSP 주요 스크립트
+ - 선언 태그 : JSP 페이지에서 Java의 멤버변수 또는 메서드를 선언
+<%!
+   int num = 10;	// 변수 선언 및 초기화
+   String str = “jsp”;
+   ArraryList<String> list = new ArraryList<String>();	// 객체 생성 및 인스턴스 초기화
+
+   public void jspMethod() {	// 메서드 선언 및 정의
+     System.out.println(“ --jspMethod() --”);
+   }
+%>
+ - 주석 태그 : jsp 주석은 jsp 파일이 서블릿 파일로 변환될 때 제외된다.
+<!-- 주석 태그 --> : HTML 주석
+<%-- Hello JSP World!! --%> : JSP 주석
+ - 스크립트릿 태그 : JSP 페이지에서 Java 코드를 넣기 위한 태그
+<%
+   if(num > 0) {		// Java 코드
+%>
+   <p> num > 0 </p>	// HTML 코드
+<%
+   } else {		// Java 코드
+%>
+   <p> num <= 0 </p>	// HTML 코드
+<%
+   }			// Java 코드
+%>
+ - 표현식 태그 : Java의 변수 및 메서드의 반환값을 출력하는 태그
+ num is <%=num%>, num is는 HTML 코드 <%=%> 안의 num은 Java 코드
+ - 지시어 : 서버에서 jsp 페이지를 처리하는 방법에 대한 정의
+ 1) page : 페이지 기본 설정 -> <%page 속성=“속성값”>
+ 2) include : include file 설정 -> <%include file=“파일명”>
+ 3) taglib : 외부 라이브러리 태그 설정 -> <%taglib uri=“uri” prefix=“네임스페이스명”>
+
+10. JSP request, response
+ 10-1. request 객체
+ - user -> Request -> 웹 서버(jsp)
+<form action=“mSignUp.jsp” method=“get”>
+   user data
+   <input type=“submit” value=“sign up”>
+</form>
+ -> Request
+<%
+   m_name = request.getParameter(“m_name”);
+   m_pass = request.getParameter(“m_pass”);
+   m_gender = request.getParameter(“m_gender”);
+   m_hobby = request.getParameter(“m_hobby”);
+   m_residence = request.getParameter(“m_residence”);
+%>
+ 10-2. response 객체
+ - user <- Response <- 웹 서버(jsp)
+<body>
+   First Page </br>
+   <%
+    response.sendRedirect(“secondPage.jsp”);
+   %>
+</body>
+ -> Response
+<body>
+   Second Page
+</body>
+
+11. JSP 내장 객체
+ 11-1. config 객체
+ - web.xml(init param) -> getInitParameter() -> JSP(init param)
+ 11-2. application 객체
+ - web.xml(context param) -> getInitParameter() -> JSP(context param)
+ - context -> setAttribute(), getAttribute() -> JSP
+ 11-3. out 객체
+ - JSP > HTML
+<%
+   out.print("<h1>Hello JAVA World!!</h1>");
+   out.print("<h2>Hello JSP World!!</h2>");
+   out.print("<h3>Hello Servlet World!!</h3>");
+%>
+ 11-4. exception 객체
+ - JSP(error 발생) -> exception 객체
+<!--exception 객체-->
+<%
+   out.print(str.toString());
+%>
+ -> 
+<%
+   response.setStatus(200);
+   String msg = exception.getMessage();
+%>
+<h1>error message : <%=msg %></h1>
+
+12. Servlet 데이터 공유
+ 12-1. servlet parameter
+ - web.xml(init param) -> getInitParameter() -> servlet(init param)
+<init-param>
+   <param-name>adminId</param-name>
+   <param-value>admin</param-value>
+</init-param>
+<init-param>
+   <param-name>adminPw</param-name>
+   <param-value>1234</param-value>
+</init-param>
+ -> 
+String adminId= getServletConfig().getInitParameter("adminId");
+String adminPw= getServletConfig().getInitParameter("adminPw");
+ 12-2. context parameter
+ - web.xml(context param) -> getInitParameter() -> servlet(context param)
+<context-param>
+   <param-name>imgDir</param-name>
+   <param-value>/upload/img</param-value>
+</context-param>
+<context-param>
+   <param-name>testServerIP</param-name>
+   <param-value>127.0.0.1</param-value>
+</context-param>
+ -> 
+String imgDir= getServletContext().getInitParameter("imgDir");
+String testServerIP= getServletContext().getInitParameter("testServerIP");
+ 12-3. context attribute
+ - context -> setAttribute(), getAttribute() -> servlet
