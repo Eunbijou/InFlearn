@@ -229,3 +229,58 @@ String imgDir= getServletContext().getInitParameter("imgDir");
 String testServerIP= getServletContext().getInitParameter("testServerIP");
  12-3. context attribute
  - context -> setAttribute(), getAttribute() -> servlet
+
+13. Cookie
+ 13-1. Cookie란?
+ - 브라우저(클라이언트) -> request -> 서버
+ - 서버 -> response, 연결 해제 -> 브라우저(클라이언트)
+ -> 브라우저(클라이언트) 기존 연결정보 저장(Cookie) -> request -> 서버
+ - 서버-> response, 연결 해제 -> 브라우저(클라이언트) 기존 연결정보 저장(Cookie)
+ 13-2. Cookie 구현
+ - cookie == null -> false -> cookie 재활용 -> redirect : loginOk.jsp
+ - cookie == null -> true -> cookie 생성 -> redirect : loginOk.jsp
+
+14. Session
+ 14-1. Session이란?
+ - 브라우저(클라이언트) -> request -> 서버
+ - 서버 -> response, 연결 해제 -> 브라우저클라이언트)
+ -> 브라우저(클라이언트) -> request -> 서버 기존 연결정보 저장(Session)
+ - 서버 기존 연결정보 저장(Session) -> response, 연결 해제 -> 브라우저(클라이언트)
+ 14-2. Session 구현
+ - session == null -> false -> 로그인 정보 출력 -> session = request.getSession();
+out.print("memberId : "+ session.getAttribute("memberId") + "</br>"); 또는 redirect : loginOk.jsp -> 로그아웃 -> session.invalidate();
+ - session == null -> true -> 로그인 유도 -> HttpSession session= request.getSession();
+session.setAttribute("memberId", mId);
+response.sendRedirect("loginOk.jsp"); 또는 redirect : loginOk.jsp -> 로그아웃 -> session.invalidate();
+
+15. 한글 처리
+ 15-1. 한글 처리
+ - 브라우저 -> post : 서블릿에 request.setCharacterEncoding(“UTF-8”); / get : server.xml에 <Connector URIEncoding=“UTF-8”/> 추가 -> 웹 서버
+ 15-2. Filter
+ - 브라우저 -> request Filter -> 웹 서버
+ - 웹 서버 -> Filter response -> 브라우저
+ - UserFilter(class) -> Filter(interface)
+ - UserFilter(class) -> 
+publicclassTempFilter implementsFilter {
+
+   @Override
+   publicvoidinit(FilterConfig arg0) throwsServletException {}
+
+   @Override
+   publicvoiddoFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+ throwsIOException, ServletException {}
+
+   @Override
+   publicvoiddestroy() {}
+}
+
+16. 오라클 설치
+ 16-1. 오라클 다운로드
+ - http://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html
+ 16-2. 오라클 설치
+ - OracleWE_112_Win64 -> setup.exe -> Next -> I accept the in the license agreement -> Next 
+ 16-3. 계정 생성
+ - cmd 창에서 i>sqlplus -> Enter user-name : system, Enter password: 설정한 비밀번호 -> SQL> create user scott identified by tiger; -> User created -> SQL> grant connect, resource to scott; -> Grant succeeded -> SQL>exit
+ 16-4. SQL developer
+ - http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html
+ - 처음 SQL developer를 실행하면 Java 경로를 설정해야 한다. 컴퓨터에 설치되어 있는 Java 경로를 설정한다. -> SQL developer가 실행된다. -> SQL developer가 실행되면 새로운 접속을 하기 위해서 왼쪽 접속 메뉴에서 오른쪽 마우스 버튼을 클릭해서 ‘새 접속’ 메뉴를 클릭한다. -> 접속 이름, 사용자 이름, 비밀번호는 미리 생성한 계정을 넣는다.
