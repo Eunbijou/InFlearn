@@ -284,3 +284,103 @@ publicclassTempFilter implementsFilter {
  16-4. SQL developer
  - http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html
  - 처음 SQL developer를 실행하면 Java 경로를 설정해야 한다. 컴퓨터에 설치되어 있는 Java 경로를 설정한다. -> SQL developer가 실행된다. -> SQL developer가 실행되면 새로운 접속을 하기 위해서 왼쪽 접속 메뉴에서 오른쪽 마우스 버튼을 클릭해서 ‘새 접속’ 메뉴를 클릭한다. -> 접속 이름, 사용자 이름, 비밀번호는 미리 생성한 계정을 넣는다.
+
+17. SQL
+ 17-1. 테이블 생성 및 삭제
+ - --table 생성
+CREATE TABLEbook (
+book_id NUMBER(4),
+book_name VARCHAR2(20),
+book_loc VARCHAR2(20)
+);
+--테이블검색
+SELECT* FROMtab;
+--테이블삭제
+DROP TABLEbook;
+--table 생성-제약조건
+CREATE TABLEbook (
+book_id NUMBER(4) CONSTRAINTbook_id_pk PRIMARY KEY,
+book_name VARCHAR2(20),
+book_loc
+ 17-2. 테이블 추가, 수정, 삭제
+ - --시퀀스생성
+CREATE SEQUENCEbook_seq;
+--데이터추가
+INSERT INTO 
+book(book_id, book_name, book_loc)
+VALUES
+(BOOK_SEQ.NEXTVAL, 'book5', '001-00005');
+INSERT INTO 
+book
+VALUES
+(BOOK_SEQ.NEXTVAL, 'book6', '001-00006');
+--수정
+UPDATEbook SETbook_loc = '001-00006123' 
+WHEREbook_name = 'book6';
+--삭제
+DELETE FROM book
+WHEREbook_id = 6;
+ 17-3. 테이블 검색
+ - --데이터검색
+SELECT* FROMbook;
+SELECTbook_name, book_loc FROMbook;
+SELECTbook_name AS책이름, book_loc AS책위치FROMbook;
+--조건-WHERE
+SELECT* FROMbook WHEREbook_id > 3;
+SELECT* FROMbook WHEREbook_id > 3 ANDbook_id <= 5;
+--조건-BETWEEN AND
+SELECT* FROMbook WHEREbook_id BETWEEN2 AND4;
+--조건-LIKE
+SELECT* FROMbook WHEREbook_id LIKE3;
+SELECT* FROMbook WHEREbook_loc LIKE'%3';
+SELECT* FROMbook WHEREbook_name LIKE'book%';
+SELECT* FROMbook WHEREbook_name LIKE'%ok%';
+--정렬
+SELECT* FROMbook ORDER BY book_id ASC;
+SELECT* FROMbook ORDER BY book_id DESC;
+SELECT* FROMbook ORDER BY book_name ASC;
+SELECT* FROMbook ORDER BY book_name DESC;
+
+18. JDBC
+ 18-1. JDBC 설정
+ - Java와 DB가 통실할 수 있게 해주는 API
+ - eclipse에서도 Oracle의 API를 이용하기 위해서, Oracle LIB를 eclipse에 복사한다.
+ - Windows – Preference -> Java – ClasspathVariables – JRE_LIB
+ - C:\oraclexe\app\oracle\product\11.2.0\server\jdbc\lib -> copy : objdbc6_g.jar -> C:\Program Files\Java\jre1.8.0_151\lib\ext
+ 18-2. JDBC를 이용한 데이터 관리
+ - JDBC 실행 순서 : OracleDriver 로딩(Driver loading) -> Java와 Oracle 연결(Connection) -> query 전송 객체(Statement) -> query 작성(query) -> query 전송(run)
+ 18-3. PreparedStatement
+ - JDBC 실행 순서 : Driver loading -> Connection -> Statement -> query -> run
+ - Driver loading -> Connetcion -> query -> PreparedStatement -> run
+
+19. DAO와 DTO
+ 19-1. DAO, DTO란?
+ - 브라우저 -> request -> Servlet -> DAO -> DB -> DTO -> DAO -> Servlet -> response -> 브라우저
+ - 웹 서버 : Servlet, DAO
+ - DAO : Data Access Object, DTO : Data Transfer Object
+ 19-2. DAO, DTO 구현
+ - 브라우저 <-> BookServlet <-> DB
+ -> 브라우저 <-> BookServlet <-> BookDAO <-> DTO -> DB
+
+20. Connection Pool
+ 20-1. 커넥션 풀이란?
+ - 브라우저 -> request -> 웹 서버 -> DB Access(DB Connection, Data handing, DB connection Close) -> DB
+ -> 브라우저 -> request -> 웹 서버 -> DB Access(<- rent <- Connection Pool) -> DB
+ 20-2. 커넥션 풀 설정
+ - context.xml에서 
+<Resource
+   auth=“container”
+   driverClassName=“oracle.jdbc.driver.OracleDriver”
+   url=“jdbc:oracld:thin:@localhost:1521:xe”
+   username=“scott”
+   password=“tiger”
+   name=“jdbc/Oracle11g”
+   type=“javax.sql.DataSource”
+   maxActive=“4”
+   masWait=“10000” />
+ 20-3. 커넥션 풀 구현
+ - DataSource dataSource;
+ - Context context = new InitialContext();
+ dataSource = (DataSource)context.lookup(“java:comp/env/jdbc/Oracle11g”);
+ - // con = DriverManager.getConnection(url, id, pw);
+ con = dataSource.getConnection();
