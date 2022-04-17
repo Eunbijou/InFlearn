@@ -348,3 +348,121 @@ publicString success(Model model) {
  - 뷰(home.jsp)
  16-7. 실행
  - 프로젝트 선택 -> Run As -> Run on Server
+
+17. Service & Dao 객체 준비
+ 17-1. 웹 애플리케이션 준비
+ - 웹 애플리케이션의 일반적으로 프로그램 구조 : 사용자 요청(브라우저) -> 프론트 컨트롤러(DispatcherServlet) -> 뷰(jsp 파일), 컨트롤러 -> 서비스 -> DAO(Data Access Object) -> Database
+ - New -> Project -> Spring Legacy Project -> Spring MVC Project -> Next -> 패키지 명 -> Finish -> Run As 
+ 17-2. 한글 처리
+<filter>
+   <filter-name>encodingFilter</filter-name>
+   <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+   <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+   </init-param>
+   <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+   </init-param>
+</filter>
+<filter-mapping>
+   <filter-name>encodingFilter</filter-name>
+   <url-pattern>/*</url-pattern>
+</filter-mapping>
+ 17-3. 서비스 객체 구현
+ - new 연산자를 이용한 서비스 객체 생성 및 참조
+MemberService service = new MemberService();
+ - 스프링 설정파일을 이용한 서비스 객체 생성 및 의존 객체 자동 주입
+<beans:bean id=“service” class=“com.bs.lec17.member.service.MemberService”></beans:bean>
+ -> @Autowired
+MemberService service;
+ - 어노테이션을 이용해서 서비스 객체 및 의존 객체 자동 주입
+@Repository(“memService”)
+public class MemberService implements IMemberService {
+ -> @Resource(name=“memService”)
+MemberService service; 
+ 17-4. DAO 객체 구현
+ - 어노테이션을 이용해서 DAO 객체 생성 및 의존 객체 자동 주입
+@Repository
+public class MemberDao implements IMemberDao {
+ -> @Autowired
+MemberDao dao;
+
+18. Controller 객체 구현 (1)
+ 18-1. 웹 애플리케이션 준비
+ - .controller : 컨트롤러 객체
+ - .dao : DAO(Data Access Object)
+ - .service : 서비스 객페
+ - html : 웹 컴포넌트
+ - views : 뷰(JSP) 컴포넌트
+ 18-2. @RequestMapping을 이용한 URL 맵핑
+ - 메소드에 @RequestMapping 적용
+http://localhost:8090/lec18/memJoin -> memJoin() 실행
+ - 클래스에 @RequestMapping 적용
+기능에 따른 컨트롤러 클래스 제작, 컨트롤러 안의 세부기능, 컨트롤러 안의 세부 기능
+ - @RequestMapping을 이용한 URL 맵핑
+데이터 전송방식에 따른 method 속성 설정
+ 18-3. 요청 파라미터
+ - HttpServletRequest 객체를 이용한 HTTP 전송 정보 얻기
+ID : <input type=“text” name=“memId”>
+PW : <input type=“password” name=“memPw”>
+ ->
+@RequestMapping(value=“/memLogin”, method=RequestMethode.POST)
+public String memLogin(Model model, HttpServletRequest request) {
+   String memId = request.getParameter(“memId”);
+   String memPw = request.getParameter(“memPw”);
+}
+ - @RequestParam 어노테이션을 이용한 HTTP 전송 정보 얻기
+ID : <input type=“text” name=“memId”>
+PW : <input type=“password” name=“memPw”>
+ -> 
+@RequestMapping(value=“/memLogin”, method=RequestMethode.POST)
+public String memLogin(Model model, @RequestParam(“memId”) String memId, @RequestParam(“memPw”) String memPw) {
+   Member member = service.memberSearch(memId, memPw);
+}
+ - 커맨드 객체를 이용한 HTTP 전송 정보 얻기
+ memJoin.html -> Member.java -> MemberController.java
+
+19. Controller 객체 구현 (2)
+ 19-1. @ModelAttribute
+ - @ModelAttribute를 이용하면 커맨드 객체의 이름을 변경할 수 있고, 이렇게 변경된 이름은 뷰에서 커맨드 객체를 참조할 때 사용된다.
+ - 컨트롤러 -> 뷰
+ 19-2. 커맨드 객체 프로퍼티 데이터 타입
+ - 데이터가 기조 데이터 타입인 경우
+ memberJoin.html -> Member.java
+ - 데이터가 중첩 커맨드 객체를 이용한 List 구조인 경우
+memberJoin.html -> Member.java
+ 19-3. Model & ModelAndView
+ - 컨트롤러에서 뷰에 데이터를 전달하기 위해 사용되는 객체로 Model과 ModelAndView가 있다. 두 객체의 차이점은 Model은 뷰에 데이터만을 전달하기 위한 객체이고, ModelAndView는 데이터와 뷰의 이름을 함께 전달하는 객체이다.
+
+20. 세션, 쿠키
+ 20-1. 세션(Session)과 쿠키(Cookie)
+ - Connectionless Protocol : 웹 서비스는 HTTP 프로토콜을 기반으로 하는데, HTTP 프로토콜은 클라이언트와 서버의 관계를 유지하지 않는 특징이 있다.
+ - 클라이언트 -> 1. 요청(Request) : 서버 연결 -> 서버 -> 2. 응답(Response) : 서버 연결 해제 -> 클라이언트
+ - Connectionless Protocol : 서버의 부하를 줄일 수 있는 장점은 있나, 클라이언트의 요청 시마다 서버와 매번 새로운 연결이 생성되기 때문에 일반적인 로그인 상태 유지, 장바구니 등의 기능을 구현하기 어렵다.
+ - 클라이언트 -> 1. 로그인 요청 -> 서버 -> 2. 로그인 성공 응답 -> 클라이언트 -> 3. 상품 주문 요청 -> 서버 -> 4. 로그인 유도 페이지 응답 -> 클라이언트
+ - 이러한 Connectionless Protocol의 불편함을 해결하기 위해서 세션과 쿠키를 이용한다. 세견과 쿠키는 클라이언트와 서버의 연결 상태를 유지해주는 방법으로, 세션을 서버에서 연결 정보를 관리하는 반면 쿠키는 클라이언트에서 연결 정보를 관리하는데 차이가 있다.
+ 20-2. HttpServletRequest를 이용한 세션 사용
+ - 클라이언트 –> 1-1. 회원가입 요청 -> 서버 -> 1-2. 회원가입 응답 -> 클라이언트 -> 2-1. 로그인 요청 -> 서버 -> 2-2. 로그인 응답 : 세션 생성 -> 클라이언트 -> 3-1. 회원 정보 수정 요청 -> 서버 -> 3-2. 회원 정보 수정 응답 : 세션 이용 -> 클라이언트 -> 4-1. 회원 정보 삭제 요청 -> 서버 -> 4-2. 회원 정보 삭제 응답 : 세션 이용 -> 클라이언트
+ - 스프링 MVC에서 HttpServletRequest를 이용해서 세션을 이용하려면 컨트롤러의 메소드에서 파라미터로 HttpServletRequest를 받으면 된다.
+ 20-3. HttpSession을 이용한 세션 사용
+ - HttpServletRequest와 HttpSession의 차이점은 거의 없으며, 단지 세션 객체를 얻는 방법에 차이가 있을 뿐이다.
+ - HttpServletRequest : 파라미터로 HttpServletRequest를 받은 후 getSession()으로 세션을 얻음.
+ - HttpSession : 파라미터로 HttpSession을 받아 세션 사용.
+ 20-4. 세션 삭제
+ - 세션을 삭제하는 방법은 세션에 저장된 속성이 더 이상 필요 없을 때 이루어지는 과정으로 주로 로그아웃 또는 회원 탈퇴 등에 사용된다.
+ 20-5. 세션 주요 메소드 및 플로어
+ - getId() : 세션 ID를 반환다.
+ - setAttribute() : 세션 객체에 속성을 저장한다.
+ - getAttribute() : 세션 객체에 저장된 속성을 반환한다.
+ - removeAttribute() : 세션 객체에 저장된 속성을 제거한다.
+ - setMaxInactiveInterval() : 세션 객체의 유지시간을 설정한다.
+ - getMaxInactiveInterval() : 세션 객체의 유지시간을 반환한다.
+ - invalidate() : 세션 객체의 모든 정보를 삭제한다.
+ - 클라이언트 -> 1. 서버 연결 및 요청 -> 서버(2.setAttribute(“member”, mem), -> 세션(3. member 속성 저장)) -> 4. 응답 -> 클라이언트 -> 5. 요청 -> 서버(6. getAttribute(“member”) -> 세션(7. member 속성 반환)) -> 8. 응답 -> 클라이언트 
+ 20-6. 쿠키(Cookie)
+ - mallMain()에서 쿠키를 생성하고, 파라미터로 받은 HttpServletResponse에 쿠키를 담고 있다.
+ - 쿠키를 생성할 때는 생성자에 두 개의 파라미터를 넣어주는데 첫 번째 쿠키 이름을 넣어주고, 두 번째는 쿠키값을 넣어준다.
+ - @CookieValue 어노테이션의 value 속성은 쿠키 이름을 나타내는데, 만약 value에 명시한 쿠키가 없을 경우 익셉션이 발생한다. 익셉션을 막는 방법이 있는데, 바로 required 속성이다. Required 속성은 기본값으로 true를 가지고 있는데 required가 true인 경우 value 값에 해당하는 쿠키가 없으면 익셉견이 발생한다. 따라서 required 속성 값을 false로 설정해서 value 값에 해당하는 쿠키가 없어도 익셉션이 발생하지 않도록 한다.
+ 
