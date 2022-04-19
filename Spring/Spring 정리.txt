@@ -489,4 +489,52 @@ memberJoin.html -> Member.java
  22-4. SQL developer
  - http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html
  - SQL developer를 실행하면 Java 경로를 설정해야 한다. 컴퓨터에 설치되어 있는 Java 경로를 설정한다. -> SQL developer가 실행된다. -> 실행되면 새로운 접속을 하기 위해서 왼쪽 접속 메뉴에서 오른쪽 마우스 버튼을 클릭해서 ‘새 접속’ 메뉴를 클릭한다. 
- 
+
+23. JDBC
+ 23-1. 기본 SQL
+ - member 테이블 생성
+CREATE TABLE member(
+ memId VARCHAR2(10) CONSTRAINT memId_pk PRIMARY KEY,
+ memPw VARCHAR2(10),
+ memMail VARCHAR2(15),
+ memPurcNum NUMBER(3) DEFAULT 0 CONSTRAINT memPurNum_ck CHECK (memPurcNum < 3));
+ - member 테이블에 테스트 차원에서 ‘b’ 계정을 삽입한다.
+INSERT INTO member(memId, memPw, memMail)
+values(‘b’, ‘bb’, ‘bbb@gmail.com’);
+ - member 테이블에서 ‘memId’가 ‘b’인 회원을 삭제한다.
+DELETE FROM member WHERE memId = ‘b’;
+ - member 테이블의 모든 회원정보를 출력한다.
+SELECT * FROM member;
+ - member 테이블을 삭제한다.
+DROP TABLE member;
+ 23-2. JDBC
+ - 드라이버 로딩 -> DB 연결 -> SQL 작성 및 전송 -> 자원 해제
+
+24. JdbcTemplate
+ 24-1. JDBC의 단점을 보완한 JdbcTemplate
+ - JDBC : 드라이버 로딩 -> DB 연결 -> SQL 작성 및 전송 -> 자원 해제
+ - JdbcTemplate : JdbcTemplate(드라이버 로딩, DB연결, 자원 해제) -> SQL 작성 및 전송
+ 24-2. DataSource 클래스
+ - 데이터베이스 연결과 관련된 정보를 가지고 있는 DataSource는 스프링 또는 c3p0에 제공하는 클래스를 이용할 수 있다.
+ - 스프링 : org.springframework.jdbc.datasource.DriverManagerDataSource
+ - c3p0 : com.mchange.v2.c3p0. DriverManagerDataSource
+
+25. 커넥션풀
+ 25-1. c3p0 모듈의 ComboPooledDataSource
+ - com.mchange.v2.c3p0.ComboPooledDataSource
+dataSource = new DriverManagerDataSoruce();
+dataSource.setDriverClass(driver);
+dataSource.setJdbcUrl(url);
+dataSource.setUser(userid);
+dataSource.setPassword(userpw);
+ 25-2. 스프링 설정 파일을 이용한 DataSource 설정
+<beans:bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+  <beans:property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+  <beans:property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe" />
+  <beans:property name="user" value="scott" />
+  <beans:property name="password" value="tiger" />
+  <beans:property name="maxPoolSize" value="200" />
+  <beans:property name="checkoutTimeout" value="60000" />
+  <beans:property name="maxIdleTime" value="1800" />
+  <beans:property name="idleConnectionTestPeriod" value="600" />
+</beans:bean>
